@@ -1,6 +1,7 @@
 'use client'
 
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 
@@ -17,6 +18,7 @@ function Register() {
 
 	const [errors, setErrors] = useState({})
 	const [showPassword, setShowPassword] = useState(false)
+	const router = useRouter()
 
 	const validate = () => {
 		const errors = {}
@@ -39,17 +41,15 @@ function Register() {
 		}
 
 		try {
-			await axios.post('http://localhost:8000/auth/register', formData)
-			setFormData({
-				firstName: '',
-				lastName: '',
-				email: '',
-				phone: '',
-				description: '',
-				password: '',
-				confirmPassword: '',
-			})
-			setErrors({})
+			const response = await axios.post(
+				'http://localhost:8000/auth/register',
+				formData
+			)
+
+			localStorage.set('token', response.data.token, { expires: 30 })
+
+			// console.log(Cookies.get('token'))
+			router.push('/bands')
 		} catch (error) {
 			console.error('Registration error:', error)
 		}
