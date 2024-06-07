@@ -53,7 +53,7 @@ export default function BandDetails() {
 	}
 
 	return (
-		<div>
+		<div className='w-4/5 mt-24'>
 			{band && (
 				<div key={band._id} className='band even'>
 					<div
